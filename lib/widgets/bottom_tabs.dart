@@ -59,7 +59,7 @@ class _BottomTabsState extends State<BottomTabs>
             width: 1,
           ),
         ),
-        color: AppColors.black90,
+        color: Colors.black,
       ),
       child: SafeArea(
         top: false,
@@ -102,7 +102,7 @@ class _BottomTabsState extends State<BottomTabs>
                               boxShadow: [
                                 BoxShadow(
                                   color: modeColor.withOpacity(
-                                    alpha: 0.3 + 0.2 * _glowController.value,
+                                    0.3 + 0.2 * _glowController.value,
                                   ),
                                   blurRadius: 15,
                                   spreadRadius: 2,

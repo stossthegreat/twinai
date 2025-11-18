@@ -20,7 +20,7 @@ class AppDimensions {
   // Component heights
   static const double inputHeight = 48.0;
   static const double buttonHeight = 48.0;
-  static const double tabHeight = 60.0;
+  static const double tabHeight = 120.0;
   static const double headerHeight = 100.0;
   
   // Animation durations (in milliseconds)

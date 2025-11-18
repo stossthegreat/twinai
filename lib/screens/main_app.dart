@@ -13,7 +13,6 @@ import 'future_mode.dart';
 import 'dream_mode.dart';
 import 'shadow_mode.dart';
 import 'settings/settings_main.dart';
-import '../constants/app_colors.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -101,11 +100,13 @@ class _MainAppState extends State<MainApp> {
                   return <Widget>[
                     SliverAppBar(
                       backgroundColor: Colors.black,
-                      expandedHeight: 200.0,
+                      expandedHeight: 240.0, // Increased height
                       floating: true,
                       pinned: false,
                       snap: true,
+                      automaticallyImplyLeading: false, // Remove back button
                       flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.parallax,
                         background: CustomHeader(
                           cognitiveLoad: _systemState.cognitiveLoad,
                           systemStatus: _systemState.statusLabel,

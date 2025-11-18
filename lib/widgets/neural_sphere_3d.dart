@@ -47,8 +47,8 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
     _nodes = [];
     _connections = [];
     final random = math.Random();
-    const sphereRadius = 150.0;
-    const nodeCount = 120;
+    const sphereRadius = 200.0; // Increased radius for larger sphere
+    const nodeCount = 200; // More nodes for denser network
 
     // Generate nodes in 3D sphere
     for (int i = 0; i < nodeCount; i++) {
@@ -80,7 +80,7 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
           math.pow(node1.z - node2.z, 2)
         );
         
-        if (distance < 80 && random.nextDouble() > 0.7) {
+        if (distance < 120 && random.nextDouble() > 0.6) { // More connections
           _connections.add(NeuralConnection(
             node1: i,
             node2: j,
@@ -96,7 +96,7 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
     _particles = [];
     final random = math.Random();
     
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 150; i++) { // More particles for better effect
       _particles.add(Particle(
         x: (random.nextDouble() - 0.5) * 400,
         y: (random.nextDouble() - 0.5) * 400,
@@ -122,19 +122,24 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 340,
+      height: double.infinity,
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border.all(
-          color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.3),
-          width: 2,
+          color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.6),
+          width: 3,
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
+            color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.4),
+            blurRadius: 80,
+            spreadRadius: 20,
+          ),
+          BoxShadow(
             color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.2),
-            blurRadius: 50,
-            spreadRadius: 10,
+            blurRadius: 120,
+            spreadRadius: 40,
           ),
         ],
       ),
@@ -176,22 +181,24 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
               },
             ),
             
-            // Central glow effect
+            // Central glow effect - ENHANCED
             Center(
               child: AnimatedBuilder(
                 animation: _pulseController,
                 builder: (context, child) {
                   return Container(
-                    width: 60 + (40 * _pulseController.value),
-                    height: 60 + (40 * _pulseController.value),
+                    width: 120 + (80 * _pulseController.value), // Larger central glow
+                    height: 120 + (80 * _pulseController.value),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
                         colors: [
+                          AppColors.getSystemModeColor(widget.mode).withOpacity(0.6),
                           AppColors.getSystemModeColor(widget.mode).withOpacity(0.3),
                           AppColors.getSystemModeColor(widget.mode).withOpacity(0.1),
                           Colors.transparent,
                         ],
+                        stops: [0.0, 0.3, 0.7, 1.0],
                       ),
                     ),
                   );

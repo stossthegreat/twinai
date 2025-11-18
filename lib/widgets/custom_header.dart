@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
-import '../constants/app_text_styles.dart';
 
 class CustomHeader extends StatefulWidget {
   final double cognitiveLoad;
@@ -211,36 +209,44 @@ class _CustomHeaderState extends State<CustomHeader>
                   ],
                 ),
                 
-                // System State section (RIGHT SIDE)
+                // System State section (RIGHT SIDE) - ENHANCED VISIBILITY
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       'SYSTEM STATE',
                       style: TextStyle(
-                        fontSize: 10,
-                        color: AppColors.white50,
-                        letterSpacing: 1.5,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      widget.systemStatus,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: modeColor,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                        color: AppColors.white60,
+                        letterSpacing: 1.8,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      widget.systemMode,
+                      widget.systemStatus,
                       style: TextStyle(
-                        fontSize: 9,
-                        color: AppColors.white35,
-                        letterSpacing: 2.2,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: modeColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: modeColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: modeColor.withOpacity(0.4), width: 1),
+                      ),
+                      child: Text(
+                        widget.systemMode,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: modeColor,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -254,11 +260,11 @@ class _CustomHeaderState extends State<CustomHeader>
             Row(
               children: [
                 Expanded(child: _buildMetric("COGNITIVE\nLOAD", widget.cognitiveLoad, "%", _getCognitiveLoadColor())),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 Expanded(child: _buildMetric("NEURAL\nACTIVITY", widget.neuralActivity, "%", AppColors.cyan400)),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 Expanded(child: _buildMetric("EMOTIONAL\nVALENCE", widget.emotionalValence, "", _getEmotionalValenceColor())),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 Expanded(child: _buildMetric("CONSCIOUSNESS", widget.consciousnessDepth / 7 * 100, "L${widget.consciousnessDepth.floor()}/7", AppColors.purple400)),
               ],
             ),

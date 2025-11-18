@@ -128,8 +128,11 @@ class _TwinModeState extends State<TwinMode> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // 1. TOP: Neural Sphere Animation (Full Width)
-          NeuralSphere3D(mode: widget.mode),
+          // 1. TOP: Neural Sphere Animation (Full Width) - ENHANCED SIZE
+          Container(
+            height: 400, // Increased height for more impressive animation
+            child: NeuralSphere3D(mode: widget.mode),
+          ),
           
           const SizedBox(height: 24),
           
