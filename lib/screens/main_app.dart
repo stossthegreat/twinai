@@ -83,7 +83,7 @@ class _MainAppState extends State<MainApp> {
       listenable: _systemState,
       builder: (context, child) {
         return Scaffold(
-          backgroundColor: AppColors.black,
+          backgroundColor: Colors.black,
           body: Stack(
             children: [
               // Universal backdrop with mode-specific effects

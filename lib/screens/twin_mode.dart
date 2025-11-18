@@ -127,48 +127,197 @@ class _TwinModeState extends State<TwinMode> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
-        spacing: 24,
         children: [
-          // Main content grid
-          Row(
-            children: [
-              // Neural sphere (2/3 width)
-              Expanded(
-                flex: 2,
-                child: NeuralSphere3D(mode: widget.mode),
-              ),
-              const SizedBox(width: 24),
-              // Side components (1/3 width)
-              Expanded(
-                child: Column(
-                  spacing: 16,
+          // 1. TOP: Neural Sphere Animation (Full Width)
+          NeuralSphere3D(mode: widget.mode),
+          
+          const SizedBox(height: 24),
+          
+          // 2. TWIN Explanation Box
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.black80,
+              border: Border.all(color: AppColors.white20, width: 2),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.9),
+                  blurRadius: 50,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                // Twin Eyes
+                Container(
+                  width: 96,
+                  height: 96,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.white30, width: 2),
+                    color: AppColors.black40,
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Background glow
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.emerald500.withOpacity(0.2),
+                        ),
+                      ),
+                      // Eyes
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.getSystemModeColor(widget.mode),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.getSystemModeColor(widget.mode),
+                                  blurRadius: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.getSystemModeColor(widget.mode),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.getSystemModeColor(widget.mode),
+                                  blurRadius: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'T W I N',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 4,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'I watch your patterns like an ECG for your life. When the line bends, I already know where it leads. You cannot hide from data.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.white80,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TwinGlyph(mode: widget.mode),
-                    const LiveMetrics(),
+                    Column(
+                      children: [
+                        Text(
+                          'UPTIME: 847h 23m',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.emerald400,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'PATTERN ACCURACY: 94.7%',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.emerald400,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
+              ]
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // 3. LIVE BIOMETRICS Box
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.black80,
+              border: Border.all(color: AppColors.white20, width: 2),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'LIVE BIOMETRICS',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.white50,
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildBiometricRow('Heart Rate', '77', 'BPM', AppColors.rose400),
+                const SizedBox(height: 12),
+                _buildBiometricRow('Stress Index', '44', '%', AppColors.amber400),
+                const SizedBox(height: 12),
+                _buildBiometricRow('Focus Level', '60', '%', AppColors.cyan400),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // 4. STATS GRID (2x2)
+          Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(child: _buildStatCard('TRACKED PATTERNS', '12,847', AppColors.emerald400)),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildStatCard('LIVE PREDICTIONS', '2,143', AppColors.cyan400)),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(child: _buildStatCard('ACCURACY RATE', '94.7%', AppColors.purple400)),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildStatCard('INTERVENTION SUCCESS', '87.3%', AppColors.rose400)),
+                ],
               ),
             ],
           ),
 
-          // Stats grid
-          StatsGrid(),
-
-          // Message stream
-          Container(
-            constraints: const BoxConstraints(
-              maxHeight: 420,
-              minHeight: 200,
-            ),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                return TwinBubble(message: message);
-              },
-            ),
-          ),
+          const SizedBox(height: 24),
 
           // Input field
           Row(
@@ -178,7 +327,7 @@ class _TwinModeState extends State<TwinMode> {
                   decoration: BoxDecoration(
                     color: AppColors.black70,
                     border: Border.all(
-                      color: AppColors.emerald400.withOpacity( 0.4),
+                      color: AppColors.emerald400.withOpacity(0.4),
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(12),
@@ -211,12 +360,12 @@ class _TwinModeState extends State<TwinMode> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [AppColors.emerald500, AppColors.cyan500, AppColors.emerald500],
-                      stops: [0.0, 0.5, 1.0],
+                      stops: const [0.0, 0.5, 1.0],
                     ),
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.emerald400.withOpacity( 0.9),
+                        color: AppColors.emerald400.withOpacity(0.9),
                         blurRadius: 30,
                         spreadRadius: 2,
                       ),
@@ -235,19 +384,21 @@ class _TwinModeState extends State<TwinMode> {
             ],
           ),
 
+          const SizedBox(height: 24),
+
           // Footer protocol message
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.emerald500.withOpacity( 0.1),
-                  AppColors.cyan500.withOpacity( 0.1),
-                  AppColors.purple500.withOpacity( 0.1),
+                  AppColors.emerald500.withOpacity(0.1),
+                  AppColors.cyan500.withOpacity(0.1),
+                  AppColors.purple500.withOpacity(0.1),
                 ],
               ),
               border: Border.all(
-                color: AppColors.emerald400.withOpacity( 0.3),
+                color: AppColors.emerald400.withOpacity(0.3),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(12),
@@ -267,507 +418,88 @@ class _TwinModeState extends State<TwinMode> {
     );
   }
 
-}
-
-// Additional component widgets
-class TwinGlyph extends StatefulWidget {
-  final String mode;
-
-  const TwinGlyph({super.key, required this.mode});
-
-  @override
-  State<TwinGlyph> createState() => _TwinGlyphState();
-}
-
-class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMixin {
-  late AnimationController _pulseController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pulseController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    super.dispose();
-  }
-
-  Color get eyeColor => AppColors.getSystemModeColor(widget.mode);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.black80,
-        border: Border.all(color: AppColors.white20, width: 2),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity( 0.9),
-            blurRadius: 50,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          AnimatedBuilder(
-            animation: _pulseController,
-            builder: (context, child) {
-              return Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.white30, width: 2),
-                  color: AppColors.black40,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Background glow
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.emerald500.withOpacity( 0.2),
-                      ),
-                    ),
-                    // Eyes
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: eyeColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: eyeColor,
-                                blurRadius: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: eyeColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: eyeColor,
-                                blurRadius: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'T W I N',
-            style: TextStyle(
-              fontSize: 11,
-              color: AppColors.white70,
-              letterSpacing: 2.8,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'I watch your patterns like an ECG for your life. When the line bends, I already know where it leads. You cannot hide from data.',
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.white80,
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  AppColors.emerald400.withOpacity( 0.5),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Column(
-            children: [
-              Text(
-                'UPTIME: 847h 23m',
-                style: TextStyle(
-                  fontSize: 9,
-                  color: AppColors.emerald400.withOpacity( 0.7),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'PATTERN ACCURACY: 94.7%',
-                style: TextStyle(
-                  fontSize: 9,
-                  color: AppColors.emerald400.withOpacity( 0.7),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class LiveMetrics extends StatefulWidget {
-  const LiveMetrics({super.key});
-
-  @override
-  State<LiveMetrics> createState() => _LiveMetricsState();
-}
-
-class _LiveMetricsState extends State<LiveMetrics> {
-  int heartRate = 72;
-  int stress = 45;
-  int focus = 68;
-
-  @override
-  void initState() {
-    super.initState();
-    _updateMetrics();
-  }
-
-  void _updateMetrics() {
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          heartRate = 65 + math.Random().nextInt(20);
-          stress = 30 + math.Random().nextInt(40);
-          focus = 50 + math.Random().nextInt(40);
-        });
-        _updateMetrics();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.black80,
-        border: Border.all(color: AppColors.white15, width: 1),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'LIVE BIOMETRICS',
-            style: TextStyle(
-              fontSize: 10,
-              color: AppColors.white50,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 12),
-          _buildMetric('Heart Rate', '$heartRate BPM', AppColors.rose400),
-          const SizedBox(height: 10),
-          _buildMetric('Stress Index', '$stress%', AppColors.amber400),
-          const SizedBox(height: 10),
-          _buildMetric('Focus Level', '$focus%', AppColors.cyan400),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMetric(String label, String value, Color color) {
+  Widget _buildBiometricRow(String label, String value, String unit, Color color) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
-            color: AppColors.white60,
+            fontSize: 14,
+            color: AppColors.white70,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
-          ),
+        Row(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              unit,
+              style: TextStyle(
+                fontSize: 12,
+                color: color.withOpacity(0.7),
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
-}
 
-class StatsGrid extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: AppContent.statsCards.map((stat) {
-        return Expanded(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 6),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.white05,
-              border: Border.all(color: AppColors.white20, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      _getIconForStat(stat.label),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: _getColorForRisk(stat.color),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        stat.label,
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: AppColors.white50,
-                          letterSpacing: 0.5,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    stat.value,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: _getColorForRisk(stat.color),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  String _getIconForStat(String label) {
-    if (label.contains('PATTERNS')) return '◊';
-    if (label.contains('PREDICTIONS')) return '◈';
-    if (label.contains('ACCURACY')) return '◉';
-    if (label.contains('SUCCESS')) return '✶';
-    return '◊';
-  }
-
-  Color _getColorForRisk(RiskLevel risk) {
-    switch (risk) {
-      case RiskLevel.positive:
-        return AppColors.emerald400;
-      case RiskLevel.medium:
-        return AppColors.cyan400;
-      case RiskLevel.opportunity:
-        return AppColors.purple400;
-      case RiskLevel.high:
-        return AppColors.rose400;
-      default:
-        return AppColors.emerald400;
-    }
-  }
-}
-
-class TwinBubble extends StatelessWidget {
-  final TwinMessage message;
-
-  const TwinBubble({super.key, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    if (message.type == TwinMessageType.user) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.85,
-              ),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.white10,
-                border: Border.all(color: AppColors.white30, width: 1),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                message.text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (message.type == TwinMessageType.echo) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 12, left: 32),
-        child: Row(
-          children: [
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.8,
-              ),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.black70,
-                border: Border.all(color: AppColors.purple400.withOpacity( 0.6), width: 1),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '◈ SUBCONSCIOUS LAYER',
-                    style: TextStyle(
-                      fontSize: 9,
-                      color: AppColors.purple300,
-                      letterSpacing: 2.8,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    message.text,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.purple200,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Twin message
+  Widget _buildStatCard(String title, String value, Color color) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.black80,
+        border: Border.all(color: color.withOpacity(0.3), width: 2),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.1),
+            blurRadius: 20,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.85,
-            ),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.emerald500.withOpacity( 0.25),
-                  AppColors.cyan500.withOpacity( 0.25),
-                ],
+          Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color,
+                ),
               ),
-              border: Border.all(color: AppColors.emerald400.withOpacity( 0.5), width: 2),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '◈ TWIN CONSCIOUSNESS',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: AppColors.emerald300,
-                    letterSpacing: 2.5,
-                    fontWeight: FontWeight.bold,
-                  ),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: AppColors.white50,
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  message.text,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.white95,
-                    height: 1.5,
-                  ),
-                ),
-                if (message.emotionalWeight != null) ...[
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text(
-                        'EMOTIONAL WEIGHT',
-                        style: TextStyle(
-                          fontSize: 8,
-                          color: AppColors.white40,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Container(
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: AppColors.white20,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: FractionallySizedBox(
-                            widthFactor: message.emotionalWeight!,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [AppColors.emerald400, AppColors.cyan400],
-                                ),
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: color,
             ),
           ),
         ],

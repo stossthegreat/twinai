@@ -15,7 +15,7 @@ class CustomHeader extends StatefulWidget {
   final VoidCallback? onSettingsTap;
 
   const CustomHeader({
-    Key? key,
+    super.key,
     required this.cognitiveLoad,
     required this.systemStatus,
     required this.systemMode,
@@ -24,7 +24,7 @@ class CustomHeader extends StatefulWidget {
     required this.consciousnessDepth,
     this.showGlitch = false,
     this.onSettingsTap,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomHeader> createState() => _CustomHeaderState();
@@ -84,18 +84,17 @@ class _CustomHeaderState extends State<CustomHeader>
             width: 1,
           ),
         ),
-        color: AppColors.black80.withOpacity( 0.85),
+        color: Colors.black,
       ),
       child: SafeArea(
         bottom: false,
         child: Column(
-          spacing: 12,
           children: [
             // Main title row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // BLACKBOX OMNISCIENT TWIN
+                // TWIN OS Title
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,7 +104,7 @@ class _CustomHeaderState extends State<CustomHeader>
                         Stack(
                           children: [
                             Text(
-                              'BLACKBOX OMNISCIENT TWIN',
+                              'TWIN OS',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -123,7 +122,7 @@ class _CustomHeaderState extends State<CustomHeader>
                                       (math.Random().nextDouble() - 0.5) * 2 * _glitchController.value,
                                     ),
                                     child: Text(
-                                      'BLACKBOX OMNISCIENT TWIN',
+                                      'TWIN OS',
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -155,7 +154,7 @@ class _CustomHeaderState extends State<CustomHeader>
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                           color: modeColor.withOpacity(
-                                            alpha: 0.4 * (1 - _consciousnessController.value)
+                                            0.4 * (1 - _consciousnessController.value)
                                           ),
                                           width: 2,
                                         ),
@@ -184,7 +183,7 @@ class _CustomHeaderState extends State<CustomHeader>
                                     color: modeColor,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: modeColor.withOpacity( 0.8),
+                                        color: modeColor.withOpacity(0.8),
                                         blurRadius: 30,
                                         spreadRadius: 12,
                                       ),
@@ -202,7 +201,7 @@ class _CustomHeaderState extends State<CustomHeader>
                       'neural singularity v4.7 • consciousness depth: layer ${widget.consciousnessDepth.floor()}',
                       style: TextStyle(
                         fontSize: 9,
-                        color: AppColors.emerald400.withOpacity( 0.8),
+                        color: AppColors.emerald400.withOpacity(0.8),
                         letterSpacing: 3.2,
                         fontWeight: FontWeight.w500,
                       ).copyWith(
@@ -212,7 +211,7 @@ class _CustomHeaderState extends State<CustomHeader>
                   ],
                 ),
                 
-                // Status section
+                // System State section (RIGHT SIDE)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -249,8 +248,22 @@ class _CustomHeaderState extends State<CustomHeader>
               ],
             ),
             
-            // Four metrics grid
-            _buildMetricsGrid(),
+            const SizedBox(height: 12),
+            
+            // Four metrics grid (PROPERLY SPACED)
+            Row(
+              children: [
+                Expanded(child: _buildMetric("COGNITIVE\nLOAD", widget.cognitiveLoad, "%", _getCognitiveLoadColor())),
+                const SizedBox(width: 8),
+                Expanded(child: _buildMetric("NEURAL\nACTIVITY", widget.neuralActivity, "%", AppColors.cyan400)),
+                const SizedBox(width: 8),
+                Expanded(child: _buildMetric("EMOTIONAL\nVALENCE", widget.emotionalValence, "", _getEmotionalValenceColor())),
+                const SizedBox(width: 8),
+                Expanded(child: _buildMetric("CONSCIOUSNESS", widget.consciousnessDepth / 7 * 100, "L${widget.consciousnessDepth.floor()}/7", AppColors.purple400)),
+              ],
+            ),
+            
+            const SizedBox(height: 12),
             
             // Bottom stats row
             Row(
@@ -269,7 +282,7 @@ class _CustomHeaderState extends State<CustomHeader>
                   'QUANTUM SYNC: ACTIVE',
                   style: TextStyle(
                     fontSize: 8,
-                    color: AppColors.emerald400.withOpacity( 0.6),
+                    color: AppColors.emerald400.withOpacity(0.6),
                     letterSpacing: 1.0,
                   ),
                 ),
@@ -281,142 +294,133 @@ class _CustomHeaderState extends State<CustomHeader>
     );
   }
 
-  Widget _buildMetricsGrid() {
-    return Row(
-      children: [
-        Expanded(child: _buildMetric("COGNITIVE LOAD", widget.cognitiveLoad, "%", _getCognitiveLoadColor())),
-        const SizedBox(width: 12),
-        Expanded(child: _buildMetric("NEURAL ACTIVITY", widget.neuralActivity, "%", AppColors.cyan400)),
-        const SizedBox(width: 12),
-        Expanded(child: _buildMetric("EMOTIONAL VALENCE", widget.emotionalValence, "", _getEmotionalValenceColor())),
-        const SizedBox(width: 12),
-        Expanded(child: _buildMetric("CONSCIOUSNESS", widget.consciousnessDepth / 7 * 100, "L${widget.consciousnessDepth.floor()}/7", AppColors.purple400)),
-      ],
-    );
-  }
-
   Widget _buildMetric(String label, double value, String suffix, Color color) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 9,
-                color: AppColors.white45,
-                letterSpacing: 0.5,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Text(
-              value == widget.emotionalValence
-                  ? "${value > 0 ? "+" : ""}${value.toStringAsFixed(1)}"
-                  : suffix.startsWith("L")
-                      ? suffix
-                      : "${value.round()}$suffix",
-              style: TextStyle(
-                fontSize: 9,
-                color: color,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'monospace',
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Container(
-          height: 6,
-          decoration: BoxDecoration(
-            color: AppColors.white10,
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Stack(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (value == widget.emotionalValence)
-                // Emotional valence special bar (centered)
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: AppColors.white10,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              if (value == widget.emotionalValence)
-                // Center line for emotional valence
-                Positioned.fill(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 0.5,
-                        height: 6,
-                        color: AppColors.white30,
-                      ),
-                    ],
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 8,
+                    color: AppColors.white45,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2,
                   ),
                 ),
-              if (value == widget.emotionalValence)
-                // Emotional valence bar
-                Positioned.fill(
-                  child: Row(
-                    mainAxisAlignment: widget.emotionalValence >= 0 ? MainAxisAlignment.center : MainAxisAlignment.center,
-                    children: [
-                      if (widget.emotionalValence >= 0)
-                        Container(
-                          width: (MediaQuery.of(context).size.width / 4 - 30) * (widget.emotionalValence.abs() / 10) * 0.5,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.transparent, AppColors.emerald400],
-                            ),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      if (widget.emotionalValence < 0)
-                        Container(
-                          width: (MediaQuery.of(context).size.width / 4 - 30) * (widget.emotionalValence.abs() / 10) * 0.5,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [AppColors.rose400, Colors.transparent],
-                            ),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                    ],
-                  ),
+              ),
+              Text(
+                value == widget.emotionalValence
+                    ? "${value > 0 ? "+" : ""}${value.toStringAsFixed(1)}"
+                    : suffix.startsWith("L")
+                        ? suffix
+                        : "${value.round()}$suffix",
+                style: TextStyle(
+                  fontSize: 9,
+                  color: color,
+                  fontWeight: FontWeight.bold,
                 ),
-              if (value != widget.emotionalValence)
-                // Regular progress bar
-                FractionallySizedBox(
-                  widthFactor: (value / 100).clamp(0.0, 1.0),
-                  child: Container(
-                    height: 6,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: value == widget.consciousnessDepth / 7 * 100
-                            ? [AppColors.purple500, AppColors.pink500]
-                            : value == widget.neuralActivity
-                                ? [AppColors.cyan400, AppColors.blue500]
-                                : [AppColors.emerald400, AppColors.cyan400, AppColors.rose400],
-                      ),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
+              ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Container(
+            height: 6,
+            decoration: BoxDecoration(
+              color: AppColors.white10,
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: Stack(
+              children: [
+                if (value == widget.emotionalValence)
+                  // Emotional valence special bar (centered)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: AppColors.white10,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                if (value == widget.emotionalValence)
+                  // Center line for emotional valence
+                  Positioned.fill(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 0.5,
+                          height: 6,
+                          color: AppColors.white30,
+                        ),
+                      ],
+                    ),
+                  ),
+                if (value == widget.emotionalValence)
+                  // Emotional valence bar
+                  Positioned.fill(
+                    child: Row(
+                      mainAxisAlignment: widget.emotionalValence >= 0 ? MainAxisAlignment.center : MainAxisAlignment.center,
+                      children: [
+                        if (widget.emotionalValence >= 0)
+                          Container(
+                            width: (MediaQuery.of(context).size.width / 4 - 30) * (widget.emotionalValence.abs() / 10) * 0.5,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.transparent, AppColors.emerald400],
+                              ),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        if (widget.emotionalValence < 0)
+                          Container(
+                            width: (MediaQuery.of(context).size.width / 4 - 30) * (widget.emotionalValence.abs() / 10) * 0.5,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [AppColors.rose400, Colors.transparent],
+                              ),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                if (value != widget.emotionalValence)
+                  // Regular progress bar
+                  FractionallySizedBox(
+                    widthFactor: (value / 100).clamp(0.0, 1.0),
+                    child: Container(
+                      height: 6,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: value == widget.consciousnessDepth / 7 * 100
+                              ? [AppColors.purple500, AppColors.pink500]
+                              : value == widget.neuralActivity
+                                  ? [AppColors.cyan400, AppColors.blue500]
+                                  : [AppColors.emerald400, AppColors.cyan400, AppColors.rose400],
+                        ),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -440,165 +444,6 @@ class _CustomHeaderState extends State<CustomHeader>
         color: AppColors.white35,
         letterSpacing: 0.5,
       ),
-    );
-  }
-}
-
-class CognitiveLoadBar extends StatefulWidget {
-  final double cognitiveLoad;
-
-  const CognitiveLoadBar({
-    Key? key,
-    required this.cognitiveLoad,
-  }) : super(key: key);
-
-  @override
-  State<CognitiveLoadBar> createState() => _CognitiveLoadBarState();
-}
-
-class _CognitiveLoadBarState extends State<CognitiveLoadBar>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _loadAnimation;
-  double _previousLoad = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-    
-    _loadAnimation = Tween<double>(
-      begin: 0,
-      end: widget.cognitiveLoad,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _animationController.forward();
-  }
-
-  @override
-  void didUpdateWidget(CognitiveLoadBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.cognitiveLoad != oldWidget.cognitiveLoad) {
-      _previousLoad = oldWidget.cognitiveLoad;
-      _loadAnimation = Tween<double>(
-        begin: _previousLoad,
-        end: widget.cognitiveLoad,
-      ).animate(CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ));
-      
-      _animationController.reset();
-      _animationController.forward();
-    }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'COGNITIVE LOAD',
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.white50,
-          ),
-        ),
-        const SizedBox(width: AppDimensions.paddingS),
-        
-        Expanded(
-          child: Container(
-            height: 6,
-            decoration: BoxDecoration(
-              color: AppColors.white10,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-            ),
-            child: AnimatedBuilder(
-              animation: _loadAnimation,
-              builder: (context, child) {
-                return Stack(
-                  children: [
-                    // Background bar
-                    Container(
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: AppColors.white10,
-                        borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-                      ),
-                    ),
-                    
-                    // Animated progress bar
-                    FractionallySizedBox(
-                      widthFactor: _loadAnimation.value / 100,
-                      child: Container(
-                        height: 6,
-                        decoration: BoxDecoration(
-                          gradient: AppColors.neuralGradient,
-                          borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.emerald400.withOpacity(0.3),
-                              blurRadius: 8,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    
-                    // Pulse effect at the end
-                    if (_loadAnimation.value > 5)
-                      Positioned(
-                        left: (MediaQuery.of(context).size.width - 80) * 
-                              (_loadAnimation.value / 100) - 2,
-                        child: Container(
-                          width: 4,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.white.withOpacity(0.5),
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-        
-        const SizedBox(width: AppDimensions.paddingS),
-        
-        AnimatedBuilder(
-          animation: _loadAnimation,
-          builder: (context, child) {
-            return Text(
-              '${_loadAnimation.value.round()}%',
-              style: AppTextStyles.mono.copyWith(
-                color: AppColors.emerald400,
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 }
