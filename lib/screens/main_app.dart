@@ -16,7 +16,7 @@ import 'settings/settings_main.dart';
 import '../constants/app_colors.dart';
 
 class MainApp extends StatefulWidget {
-  const MainApp({Key? key}) : super(key: key);
+  const MainApp({super.key});
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -64,12 +64,12 @@ class _MainAppState extends State<MainApp> {
           onScanningChanged: _onScanningChanged,
           onSystemModeChanged: _onSystemModeChanged,
         );
-            case TabType.memory:
-              return MemoryMode();
-            case TabType.patterns:
-              return PatternMode();
-            case TabType.future:
-              return FutureMode();
+      case TabType.memory:
+        return MemoryMode();
+      case TabType.patterns:
+        return PatternMode();
+      case TabType.future:
+        return FutureMode();
       case TabType.dreams:
         return DreamMode(mode: _systemState.getModeString());
       case TabType.shadow:
@@ -95,40 +95,54 @@ class _MainAppState extends State<MainApp> {
               // Glitch overlay (when triggered)
               GlitchOverlay(showGlitch: _systemState.showGlitch),
               
-              // Main app structure
-              Column(
-                children: [
-                  // Enhanced header with all metrics
-                  CustomHeader(
-                    cognitiveLoad: _systemState.cognitiveLoad,
-                    systemStatus: _systemState.statusLabel,
-                    systemMode: _systemState.getModeString(),
-                    neuralActivity: _systemState.neuralActivity,
-                    emotionalValence: _systemState.emotionalValence,
-                    consciousnessDepth: _systemState.consciousnessDepth,
-                    showGlitch: _systemState.showGlitch,
-                    onSettingsTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsMainScreen(),
+              // Main app structure with scrollable header
+              NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      backgroundColor: Colors.black,
+                      expandedHeight: 200.0,
+                      floating: true,
+                      pinned: false,
+                      snap: true,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: CustomHeader(
+                          cognitiveLoad: _systemState.cognitiveLoad,
+                          systemStatus: _systemState.statusLabel,
+                          systemMode: _systemState.getModeString(),
+                          neuralActivity: _systemState.neuralActivity,
+                          emotionalValence: _systemState.emotionalValence,
+                          consciousnessDepth: _systemState.consciousnessDepth,
+                          showGlitch: _systemState.showGlitch,
+                          onSettingsTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SettingsMainScreen(),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                  
-                  // Main content area
-                  Expanded(
-                    child: _buildCurrentMode(),
-                  ),
-                  
-                  // Enhanced bottom navigation with 6 tabs
-                  BottomTabs(
-                    selectedTab: _selectedTab,
-                    onTabChanged: _onTabChanged,
-                    mode: _systemState.getModeString(),
-                  ),
-                ],
+                      ),
+                    ),
+                  ];
+                },
+                body: Container(
+                  color: Colors.black,
+                  child: _buildCurrentMode(),
+                ),
+              ),
+              
+              // Fixed bottom navigation
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: BottomTabs(
+                  selectedTab: _selectedTab,
+                  onTabChanged: _onTabChanged,
+                  mode: _systemState.getModeString(),
+                ),
               ),
             ],
           ),
