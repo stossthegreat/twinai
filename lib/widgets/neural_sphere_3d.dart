@@ -75,13 +75,13 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: AppColors.emerald400.withValues(alpha: 0.4),
+          color: AppColors.emerald400.withOpacity(alpha: 0.4),
           width: 2,
         ),
         color: AppColors.black80,
         boxShadow: [
           BoxShadow(
-            color: AppColors.emerald400.withValues(alpha: 0.4),
+            color: AppColors.emerald400.withOpacity(alpha: 0.4),
             blurRadius: 80,
             spreadRadius: 4,
           ),
@@ -243,7 +243,7 @@ class NeuralSpherePainter extends CustomPainter {
 
   void _drawConnections(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color) {
     final paint = Paint()
-      ..color = color.withValues(alpha: 0.25)
+      ..color = color.withOpacity(alpha: 0.25)
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
 
@@ -275,14 +275,14 @@ class NeuralSpherePainter extends CustomPainter {
 
   void _drawPoints(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color, double size) {
     final paint = Paint()
-      ..color = color.withValues(alpha: 0.95)
+      ..color = color.withOpacity(alpha: 0.95)
       ..style = PaintingStyle.fill;
 
     for (final point in points) {
       // Only draw points that are in front
       if (point.z > -1.5) {
         final opacity = (point.z + 1.5) / 3.0;
-        paint.color = color.withValues(alpha: 0.95 * opacity);
+        paint.color = color.withOpacity(alpha: 0.95 * opacity);
 
         final offset = Offset(
           center.dx + point.x * scale,
@@ -296,7 +296,7 @@ class NeuralSpherePainter extends CustomPainter {
 
   void _drawInnerSphere(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color) {
     final paint = Paint()
-      ..color = color.withValues(alpha: 0.1)
+      ..color = color.withOpacity(alpha: 0.1)
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
 

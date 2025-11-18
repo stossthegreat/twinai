@@ -413,14 +413,14 @@ class DataStreamPainter extends CustomPainter {
       final opacity = 0.3 + (math.sin(phase * math.pi * 2) * 0.7);
       
       final paint = Paint()
-        ..color = AppColors.emerald400.withValues(alpha: 0.2 * opacity)
+        ..color = AppColors.emerald400.withOpacity(alpha: 0.2 * opacity)
         ..strokeWidth = 1.0
         ..style = PaintingStyle.stroke;
 
       final gradient = LinearGradient(
         colors: [
           Colors.transparent,
-          AppColors.emerald400.withValues(alpha: 0.2 * opacity),
+          AppColors.emerald400.withOpacity(alpha: 0.2 * opacity),
           Colors.transparent,
         ],
         stops: const [0.0, 0.5, 1.0],

@@ -101,7 +101,7 @@ class _BottomTabsState extends State<BottomTabs>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: modeColor.withValues(
+                                  color: modeColor.withOpacity(
                                     alpha: 0.3 + 0.2 * _glowController.value,
                                   ),
                                   blurRadius: 15,
@@ -148,7 +148,7 @@ class _BottomTabsState extends State<BottomTabs>
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: modeColor.withValues(alpha: 0.9),
+                              color: modeColor.withOpacity(alpha: 0.9),
                               blurRadius: 10,
                               spreadRadius: 2,
                             ),

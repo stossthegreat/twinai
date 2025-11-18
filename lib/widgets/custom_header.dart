@@ -84,7 +84,7 @@ class _CustomHeaderState extends State<CustomHeader>
             width: 1,
           ),
         ),
-        color: AppColors.black80.withValues(alpha: 0.85),
+        color: AppColors.black80.withOpacity(alpha: 0.85),
       ),
       child: SafeArea(
         bottom: false,
@@ -154,7 +154,7 @@ class _CustomHeaderState extends State<CustomHeader>
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: modeColor.withValues(
+                                          color: modeColor.withOpacity(
                                             alpha: 0.4 * (1 - _consciousnessController.value)
                                           ),
                                           width: 2,
@@ -184,7 +184,7 @@ class _CustomHeaderState extends State<CustomHeader>
                                     color: modeColor,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: modeColor.withValues(alpha: 0.8),
+                                        color: modeColor.withOpacity(alpha: 0.8),
                                         blurRadius: 30,
                                         spreadRadius: 12,
                                       ),
@@ -202,7 +202,7 @@ class _CustomHeaderState extends State<CustomHeader>
                       'neural singularity v4.7 • consciousness depth: layer ${widget.consciousnessDepth.floor()}',
                       style: TextStyle(
                         fontSize: 9,
-                        color: AppColors.emerald400.withValues(alpha: 0.8),
+                        color: AppColors.emerald400.withOpacity(alpha: 0.8),
                         letterSpacing: 3.2,
                         fontWeight: FontWeight.w500,
                       ).copyWith(
@@ -269,7 +269,7 @@ class _CustomHeaderState extends State<CustomHeader>
                   'QUANTUM SYNC: ACTIVE',
                   style: TextStyle(
                     fontSize: 8,
-                    color: AppColors.emerald400.withValues(alpha: 0.6),
+                    color: AppColors.emerald400.withOpacity(alpha: 0.6),
                     letterSpacing: 1.0,
                   ),
                 ),
