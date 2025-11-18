@@ -178,7 +178,7 @@ class _TwinModeState extends State<TwinMode> {
                   decoration: BoxDecoration(
                     color: AppColors.black70,
                     border: Border.all(
-                      color: AppColors.emerald400.withOpacity(alpha: 0.4),
+                      color: AppColors.emerald400.withOpacity( 0.4),
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(12),
@@ -216,7 +216,7 @@ class _TwinModeState extends State<TwinMode> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.emerald400.withOpacity(alpha: 0.9),
+                        color: AppColors.emerald400.withOpacity( 0.9),
                         blurRadius: 30,
                         spreadRadius: 2,
                       ),
@@ -241,13 +241,13 @@ class _TwinModeState extends State<TwinMode> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.emerald500.withOpacity(alpha: 0.1),
-                  AppColors.cyan500.withOpacity(alpha: 0.1),
-                  AppColors.purple500.withOpacity(alpha: 0.1),
+                  AppColors.emerald500.withOpacity( 0.1),
+                  AppColors.cyan500.withOpacity( 0.1),
+                  AppColors.purple500.withOpacity( 0.1),
                 ],
               ),
               border: Border.all(
-                color: AppColors.emerald400.withOpacity(alpha: 0.3),
+                color: AppColors.emerald400.withOpacity( 0.3),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(12),
@@ -310,7 +310,7 @@ class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMix
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(alpha: 0.9),
+            color: Colors.black.withOpacity( 0.9),
             blurRadius: 50,
           ),
         ],
@@ -335,7 +335,7 @@ class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMix
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.emerald500.withOpacity(alpha: 0.2),
+                        color: AppColors.emerald500.withOpacity( 0.2),
                       ),
                     ),
                     // Eyes
@@ -405,7 +405,7 @@ class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMix
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  AppColors.emerald400.withOpacity(alpha: 0.5),
+                  AppColors.emerald400.withOpacity( 0.5),
                   Colors.transparent,
                 ],
               ),
@@ -418,7 +418,7 @@ class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMix
                 'UPTIME: 847h 23m',
                 style: TextStyle(
                   fontSize: 9,
-                  color: AppColors.emerald400.withOpacity(alpha: 0.7),
+                  color: AppColors.emerald400.withOpacity( 0.7),
                 ),
               ),
               const SizedBox(height: 4),
@@ -426,7 +426,7 @@ class _TwinGlyphState extends State<TwinGlyph> with SingleTickerProviderStateMix
                 'PATTERN ACCURACY: 94.7%',
                 style: TextStyle(
                   fontSize: 9,
-                  color: AppColors.emerald400.withOpacity(alpha: 0.7),
+                  color: AppColors.emerald400.withOpacity( 0.7),
                 ),
               ),
             ],
@@ -656,7 +656,7 @@ class TwinBubble extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.black70,
-                border: Border.all(color: AppColors.purple400.withOpacity(alpha: 0.6), width: 1),
+                border: Border.all(color: AppColors.purple400.withOpacity( 0.6), width: 1),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -703,11 +703,11 @@ class TwinBubble extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.emerald500.withOpacity(alpha: 0.25),
-                  AppColors.cyan500.withOpacity(alpha: 0.25),
+                  AppColors.emerald500.withOpacity( 0.25),
+                  AppColors.cyan500.withOpacity( 0.25),
                 ],
               ),
-              border: Border.all(color: AppColors.emerald400.withOpacity(alpha: 0.5), width: 2),
+              border: Border.all(color: AppColors.emerald400.withOpacity( 0.5), width: 2),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
