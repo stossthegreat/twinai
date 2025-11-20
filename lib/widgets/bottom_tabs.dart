@@ -148,7 +148,7 @@ class _BottomTabsState extends State<BottomTabs>
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: modeColor.withOpacity( 0.9),
+                              color: modeColor.withOpacity(0.9),
                               blurRadius: 10,
                               spreadRadius: 2,
                             ),

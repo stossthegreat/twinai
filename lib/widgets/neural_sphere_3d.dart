@@ -126,8 +126,8 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border.all(
-          color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.6),
-          width: 3,
+        color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.4),
+        width: 2,
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
@@ -323,7 +323,7 @@ class NeuralSpherePainter extends CustomPainter {
       final animatedStrength = connection.strength * 
         (0.3 + 0.7 * math.sin(rotation * connection.pulseSpeed + connection.node1));
       
-      connectionPaint.color = modeColor.withOpacity(animatedStrength * 0.4);
+      connectionPaint.color = modeColor.withOpacity(animatedStrength * 0.6); // Increased from 0.4
       
       // Draw connection line
       canvas.drawLine(start, end, connectionPaint);
@@ -354,9 +354,9 @@ class NeuralSpherePainter extends CustomPainter {
         final nodeIntensity = node.intensity * 
           (0.5 + 0.5 * math.sin(rotation * 2 + node.pulsePhase + pulse * math.pi * 2));
         
-        nodePaint.color = modeColor.withOpacity(nodeIntensity);
+        nodePaint.color = modeColor.withOpacity(nodeIntensity * 0.95);
         
-        final nodeSize = 1.5 + (nodeIntensity * 3);
+        final nodeSize = 1.0 + (nodeIntensity * 1.0); // Reduced from 1.5 + (nodeIntensity * 3)
         canvas.drawCircle(screenPos, nodeSize, nodePaint);
         
         // Draw node glow for highly active nodes
