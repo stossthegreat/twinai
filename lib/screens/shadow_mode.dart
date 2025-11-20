@@ -124,13 +124,13 @@ class _ShadowModeState extends State<ShadowMode>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.red500.withValues(alpha: 0.2),
-                  AppColors.slate500.withValues(alpha: 0.2),
-                  AppColors.amber500.withValues(alpha: 0.2),
+                  AppColors.red500.withOpacity( 0.2),
+                  AppColors.slate500.withOpacity( 0.2),
+                  AppColors.amber500.withOpacity( 0.2),
                 ],
               ),
               border: Border.all(
-                color: AppColors.red400.withValues(alpha: 0.5),
+                color: AppColors.red400.withOpacity( 0.5),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -191,13 +191,13 @@ class _ShadowModeState extends State<ShadowMode>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.slate500.withValues(alpha: 0.2),
-                  AppColors.purple500.withValues(alpha: 0.2),
-                  AppColors.indigo500.withValues(alpha: 0.2),
+                  AppColors.slate500.withOpacity( 0.2),
+                  AppColors.purple500.withOpacity( 0.2),
+                  AppColors.indigo500.withOpacity( 0.2),
                 ],
               ),
               border: Border.all(
-                color: AppColors.slate500.withValues(alpha: 0.5),
+                color: AppColors.slate500.withOpacity( 0.5),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -247,7 +247,7 @@ class _ShadowModeState extends State<ShadowMode>
                         decoration: BoxDecoration(
                           color: AppColors.black40,
                           border: Border.all(
-                            color: AppColors.emerald400.withValues(alpha: 0.4),
+                            color: AppColors.emerald400.withOpacity( 0.4),
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -281,7 +281,7 @@ class _ShadowModeState extends State<ShadowMode>
                         decoration: BoxDecoration(
                           color: AppColors.black40,
                           border: Border.all(
-                            color: AppColors.cyan400.withValues(alpha: 0.4),
+                            color: AppColors.cyan400.withOpacity( 0.4),
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -315,7 +315,7 @@ class _ShadowModeState extends State<ShadowMode>
                         decoration: BoxDecoration(
                           color: AppColors.black40,
                           border: Border.all(
-                            color: AppColors.purple400.withValues(alpha: 0.4),
+                            color: AppColors.purple400.withOpacity( 0.4),
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -354,13 +354,13 @@ class _ShadowModeState extends State<ShadowMode>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.red500.withValues(alpha: 0.25),
-                  AppColors.amber500.withValues(alpha: 0.2),
-                  AppColors.rose500.withValues(alpha: 0.25),
+                  AppColors.red500.withOpacity( 0.25),
+                  AppColors.amber500.withOpacity( 0.2),
+                  AppColors.rose500.withOpacity( 0.25),
                 ],
               ),
               border: Border.all(
-                color: AppColors.red500.withValues(alpha: 0.6),
+                color: AppColors.red500.withOpacity( 0.6),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -439,7 +439,7 @@ class ShadowActivityMap extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.black70,
         border: Border.all(
-          color: AppColors.slate400.withValues(alpha: 0.3),
+          color: AppColors.slate400.withOpacity(0.3),
           width: 2,
         ),
         borderRadius: BorderRadius.circular(16),
@@ -472,8 +472,8 @@ class ShadowActivityMap extends StatelessWidget {
                             shape: BoxShape.circle,
                             gradient: RadialGradient(
                               colors: [
-                                AppColors.slate500.withValues(alpha: 0.6 * opacity),
-                                AppColors.red500.withValues(alpha: 0.6 * opacity),
+                                AppColors.slate500.withOpacity( 0.6 * opacity),
+                                AppColors.red500.withOpacity( 0.6 * opacity),
                               ],
                             ),
                           ),
@@ -495,7 +495,7 @@ class ShadowActivityMap extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.slate200.withValues(alpha: 0.9),
+                      color: AppColors.slate200.withOpacity( 0.9),
                       letterSpacing: 3.0,
                     ),
                   ),
@@ -592,8 +592,8 @@ class ShadowCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.red500.withValues(alpha: 0.25),
-            AppColors.rose600.withValues(alpha: 0.15),
+            AppColors.red500.withOpacity( 0.25),
+            AppColors.rose600.withOpacity( 0.15),
           ],
         );
       case "DEFENSIVE":
@@ -601,8 +601,8 @@ class ShadowCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.amber500.withValues(alpha: 0.25),
-            AppColors.orange500.withValues(alpha: 0.15),
+            AppColors.amber500.withOpacity( 0.25),
+            AppColors.orange500.withOpacity( 0.15),
           ],
         );
       case "ADAPTIVE":
@@ -610,8 +610,8 @@ class ShadowCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.slate500.withValues(alpha: 0.25),
-            AppColors.slate400.withValues(alpha: 0.15),
+            AppColors.slate500.withOpacity( 0.25),
+            AppColors.slate400.withOpacity( 0.15),
           ],
         );
       default:
@@ -619,8 +619,8 @@ class ShadowCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.emerald500.withValues(alpha: 0.25),
-            AppColors.green500.withValues(alpha: 0.15),
+            AppColors.emerald500.withOpacity( 0.25),
+            AppColors.green500.withOpacity( 0.15),
           ],
         );
     }
@@ -634,14 +634,13 @@ class ShadowCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: typeGradient,
         border: Border.all(
-          color: typeColor.withValues(alpha: 0.7),
+          color: typeColor.withOpacity( 0.7),
           width: 2,
         ),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 16,
         children: [
           // Header
           Row(
@@ -726,9 +725,9 @@ class ShadowCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.red500.withValues(alpha: 0.2),
+                        color: AppColors.red500.withOpacity( 0.2),
                         border: Border.all(
-                          color: AppColors.red400.withValues(alpha: 0.4),
+                          color: AppColors.red400.withOpacity( 0.4),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(8),
@@ -754,7 +753,7 @@ class ShadowCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.black50,
               border: Border.all(
-                color: AppColors.red400.withValues(alpha: 0.4),
+                color: AppColors.red400.withOpacity( 0.4),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(12),
@@ -811,9 +810,9 @@ class ShadowCard extends StatelessWidget {
                 children: shadow.triggers.map((trigger) => Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.amber500.withValues(alpha: 0.2),
+                    color: AppColors.amber500.withOpacity( 0.2),
                     border: Border.all(
-                      color: AppColors.amber400.withValues(alpha: 0.4),
+                      color: AppColors.amber400.withOpacity( 0.4),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -853,9 +852,9 @@ class ShadowCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.emerald500.withValues(alpha: 0.1),
+              color: AppColors.emerald500.withOpacity( 0.1),
               border: Border.all(
-                color: AppColors.emerald400.withValues(alpha: 0.3),
+                color: AppColors.emerald400.withOpacity( 0.3),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(8),

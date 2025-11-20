@@ -4,11 +4,8 @@ import '../constants/app_colors.dart';
 
 class NeuralSphere3D extends StatefulWidget {
   final String mode;
-  
-  const NeuralSphere3D({
-    super.key,
-    this.mode = "CALM",
-  });
+
+  const NeuralSphere3D({super.key, required this.mode});
 
   @override
   State<NeuralSphere3D> createState() => _NeuralSphere3DState();
@@ -18,44 +15,98 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
     with TickerProviderStateMixin {
   late AnimationController _rotationController;
   late AnimationController _pulseController;
-  late AnimationController _innerRotationController;
-  
-  final List<NeuralPoint> _outerPoints = [];
-  final List<NeuralPoint> _innerPoints = [];
+  late AnimationController _particleController;
+  late List<NeuralNode> _nodes;
+  late List<NeuralConnection> _connections;
+  late List<Particle> _particles;
 
   @override
   void initState() {
     super.initState();
     
     _rotationController = AnimationController(
-      duration: const Duration(seconds: 100),
+      duration: const Duration(seconds: 20),
       vsync: this,
     )..repeat();
 
     _pulseController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _particleController = AnimationController(
       duration: const Duration(seconds: 8),
       vsync: this,
     )..repeat();
 
-    _innerRotationController = AnimationController(
-      duration: const Duration(seconds: 80),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _generatePoints();
+    _generateNeuralNetwork();
+    _generateParticles();
   }
 
-  void _generatePoints() {
-    // Generate outer sphere points (icosahedron-like distribution)
-    _outerPoints.clear();
-    for (int i = 0; i < 200; i++) {
-      _outerPoints.add(NeuralPoint.random(1.6, i));
+  void _generateNeuralNetwork() {
+    _nodes = [];
+    _connections = [];
+    final random = math.Random();
+    const sphereRadius = 200.0; // Increased radius for larger sphere
+    const nodeCount = 200; // More nodes for denser network
+
+    // Generate nodes in 3D sphere
+    for (int i = 0; i < nodeCount; i++) {
+      final phi = math.acos(1 - 2 * (i / nodeCount));
+      final theta = math.pi * (1 + math.sqrt(5)) * i;
+      
+      final x = sphereRadius * math.cos(theta) * math.sin(phi);
+      final y = sphereRadius * math.sin(theta) * math.sin(phi);
+      final z = sphereRadius * math.cos(phi);
+      
+      _nodes.add(NeuralNode(
+        x: x,
+        y: y, 
+        z: z,
+        intensity: random.nextDouble(),
+        pulsePhase: random.nextDouble() * 2 * math.pi,
+      ));
     }
 
-    // Generate inner sphere points
-    _innerPoints.clear();
-    for (int i = 0; i < 100; i++) {
-      _innerPoints.add(NeuralPoint.random(0.8, i));
+    // Generate connections between nearby nodes
+    for (int i = 0; i < _nodes.length; i++) {
+      for (int j = i + 1; j < _nodes.length; j++) {
+        final node1 = _nodes[i];
+        final node2 = _nodes[j];
+        
+        final distance = math.sqrt(
+          math.pow(node1.x - node2.x, 2) +
+          math.pow(node1.y - node2.y, 2) +
+          math.pow(node1.z - node2.z, 2)
+        );
+        
+        if (distance < 120 && random.nextDouble() > 0.6) { // More connections
+          _connections.add(NeuralConnection(
+            node1: i,
+            node2: j,
+            strength: random.nextDouble(),
+            pulseSpeed: 0.5 + random.nextDouble() * 2,
+          ));
+        }
+      }
+    }
+  }
+
+  void _generateParticles() {
+    _particles = [];
+    final random = math.Random();
+    
+    for (int i = 0; i < 150; i++) { // More particles for better effect
+      _particles.add(Particle(
+        x: (random.nextDouble() - 0.5) * 400,
+        y: (random.nextDouble() - 0.5) * 400,
+        z: (random.nextDouble() - 0.5) * 400,
+        velocity: Offset(
+          (random.nextDouble() - 0.5) * 0.5,
+          (random.nextDouble() - 0.5) * 0.5,
+        ),
+        life: random.nextDouble(),
+      ));
     }
   }
 
@@ -63,7 +114,7 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
   void dispose() {
     _rotationController.dispose();
     _pulseController.dispose();
-    _innerRotationController.dispose();
+    _particleController.dispose();
     super.dispose();
   }
 
@@ -71,290 +122,326 @@ class _NeuralSphere3DState extends State<NeuralSphere3D>
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 340,
+      height: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        color: Colors.black,
         border: Border.all(
-          color: AppColors.emerald400.withValues(alpha: 0.4),
-          width: 2,
+        color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.4),
+        width: 2,
         ),
-        color: AppColors.black80,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.emerald400.withValues(alpha: 0.4),
+            color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.4),
             blurRadius: 80,
-            spreadRadius: 4,
+            spreadRadius: 20,
+          ),
+          BoxShadow(
+            color: AppColors.getSystemModeColor(widget.mode).withOpacity(0.2),
+            blurRadius: 120,
+            spreadRadius: 40,
           ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(22),
-        child: AnimatedBuilder(
-          animation: Listenable.merge([
-            _rotationController,
-            _pulseController,
-            _innerRotationController,
-          ]),
-          builder: (context, child) {
-            return CustomPaint(
-              painter: NeuralSpherePainter(
-                rotationAnimation: _rotationController.value,
-                pulseAnimation: _pulseController.value,
-                innerRotationAnimation: _innerRotationController.value,
-                outerPoints: _outerPoints,
-                innerPoints: _innerPoints,
-                mode: widget.mode,
+        child: Stack(
+          children: [
+            // Background grid
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: _createGridPattern(),
+                  fit: BoxFit.cover,
+                  opacity: 0.1,
+                ),
               ),
-            );
-          },
+            ),
+            
+            // Neural sphere
+            AnimatedBuilder(
+              animation: Listenable.merge([
+                _rotationController,
+                _pulseController,
+                _particleController,
+              ]),
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: NeuralSpherePainter(
+                    nodes: _nodes,
+                    connections: _connections,
+                    particles: _particles,
+                    rotation: _rotationController.value * 2 * math.pi,
+                    pulse: _pulseController.value,
+                    particleTime: _particleController.value,
+                    modeColor: AppColors.getSystemModeColor(widget.mode),
+                  ),
+                  size: Size.infinite,
+                );
+              },
+            ),
+            
+            // Central glow effect - ENHANCED
+            Center(
+              child: AnimatedBuilder(
+                animation: _pulseController,
+                builder: (context, child) {
+                  return Container(
+                    width: 120 + (80 * _pulseController.value), // Larger central glow
+                    height: 120 + (80 * _pulseController.value),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          AppColors.getSystemModeColor(widget.mode).withOpacity(0.6),
+                          AppColors.getSystemModeColor(widget.mode).withOpacity(0.3),
+                          AppColors.getSystemModeColor(widget.mode).withOpacity(0.1),
+                          Colors.transparent,
+                        ],
+                        stops: [0.0, 0.3, 0.7, 1.0],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            
+            // Scanning lines overlay
+            AnimatedBuilder(
+              animation: _rotationController,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: ScanningLinesPainter(
+                    animation: _rotationController.value,
+                    color: AppColors.getSystemModeColor(widget.mode),
+                  ),
+                  size: Size.infinite,
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
   }
+
+  ImageProvider _createGridPattern() {
+    // Create a simple grid pattern for background
+    return const AssetImage('assets/grid_pattern.png'); // You'd need to add this asset
+  }
 }
 
-class NeuralPoint {
-  final double x;
-  final double y;
-  final double z;
-  final double animationOffset;
-  final int index;
+class NeuralNode {
+  final double x, y, z;
+  final double intensity;
+  final double pulsePhase;
 
-  NeuralPoint({
+  NeuralNode({
     required this.x,
     required this.y,
     required this.z,
-    required this.animationOffset,
-    required this.index,
+    required this.intensity,
+    required this.pulsePhase,
   });
+}
 
-  factory NeuralPoint.random(double radius, int index) {
-    // Generate points on sphere surface using spherical coordinates
-    final theta = math.Random().nextDouble() * 2 * math.pi;
-    final phi = math.acos(2 * math.Random().nextDouble() - 1);
-    
-    return NeuralPoint(
-      x: radius * math.sin(phi) * math.cos(theta),
-      y: radius * math.sin(phi) * math.sin(theta),
-      z: radius * math.cos(phi),
-      animationOffset: math.Random().nextDouble() * 5,
-      index: index,
-    );
-  }
+class NeuralConnection {
+  final int node1, node2;
+  final double strength;
+  final double pulseSpeed;
 
-  NeuralPoint transform({
-    required double rotationX,
-    required double rotationY,
-    required double rotationZ,
-    required double noise,
-  }) {
-    // Apply rotations and noise distortion
-    final cosX = math.cos(rotationX);
-    final sinX = math.sin(rotationX);
-    final cosY = math.cos(rotationY);
-    final sinY = math.sin(rotationY);
-    final cosZ = math.cos(rotationZ);
-    final sinZ = math.sin(rotationZ);
+  NeuralConnection({
+    required this.node1,
+    required this.node2,
+    required this.strength,
+    required this.pulseSpeed,
+  });
+}
 
-    // Rotate around X axis
-    final y1 = y * cosX - z * sinX;
-    final z1 = y * sinX + z * cosX;
+class Particle {
+  final double x, y, z;
+  final Offset velocity;
+  final double life;
 
-    // Rotate around Y axis
-    final x2 = x * cosY + z1 * sinY;
-    final z2 = -x * sinY + z1 * cosY;
-
-    // Rotate around Z axis
-    final x3 = x2 * cosZ - y1 * sinZ;
-    final y3 = x2 * sinZ + y1 * cosZ;
-
-    // Apply noise distortion
-    final distortion = 1 + noise * 0.15;
-    
-    return NeuralPoint(
-      x: x3 * distortion,
-      y: y3 * distortion,
-      z: z2 * distortion,
-      animationOffset: animationOffset,
-      index: index,
-    );
-  }
+  Particle({
+    required this.x,
+    required this.y,
+    required this.z,
+    required this.velocity,
+    required this.life,
+  });
 }
 
 class NeuralSpherePainter extends CustomPainter {
-  final double rotationAnimation;
-  final double pulseAnimation;
-  final double innerRotationAnimation;
-  final List<NeuralPoint> outerPoints;
-  final List<NeuralPoint> innerPoints;
-  final String mode;
+  final List<NeuralNode> nodes;
+  final List<NeuralConnection> connections;
+  final List<Particle> particles;
+  final double rotation;
+  final double pulse;
+  final double particleTime;
+  final Color modeColor;
 
   NeuralSpherePainter({
-    required this.rotationAnimation,
-    required this.pulseAnimation,
-    required this.innerRotationAnimation,
-    required this.outerPoints,
-    required this.innerPoints,
-    required this.mode,
+    required this.nodes,
+    required this.connections,
+    required this.particles,
+    required this.rotation,
+    required this.pulse,
+    required this.particleTime,
+    required this.modeColor,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final scale = size.width * 0.2;
-
-    // Mode-based parameters
-    final twist = _getTwistForMode();
-    final coreColor = _getCoreColorForMode();
-
-    // Transform outer points
-    final transformedOuter = outerPoints.map((point) {
-      final phase = (rotationAnimation * 2.5 + point.animationOffset) % 1.0;
-      final noise = math.sin(phase * math.pi * 2 + point.x * 5 + point.y * 5 + point.z * 5) * twist;
-      final pulse = math.sin(rotationAnimation * 3 + point.index * 0.1) * 0.02;
+    
+    // Transform 3D to 2D with rotation
+    List<Offset> projectedNodes = [];
+    for (final node in nodes) {
+      final rotatedX = node.x * math.cos(rotation) - node.z * math.sin(rotation);
+      final rotatedZ = node.x * math.sin(rotation) + node.z * math.cos(rotation);
       
-      return point.transform(
-        rotationX: rotationAnimation * 0.003,
-        rotationY: rotationAnimation * 0.0015,
-        rotationZ: 0,
-        noise: noise + pulse,
-      );
-    }).toList();
-
-    // Transform inner points
-    final transformedInner = innerPoints.map((point) {
-      return point.transform(
-        rotationX: -innerRotationAnimation * 0.004,
-        rotationY: innerRotationAnimation * 0.002,
-        rotationZ: 0,
-        noise: 0,
-      );
-    }).toList();
-
-    // Draw connections between outer points
-    _drawConnections(canvas, center, scale, transformedOuter, coreColor);
-
-    // Draw outer points
-    _drawPoints(canvas, center, scale, transformedOuter, coreColor, 1.5);
-
-    // Draw inner wireframe sphere
-    _drawInnerSphere(canvas, center, scale, transformedInner, coreColor);
-  }
-
-  void _drawConnections(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color) {
-    final paint = Paint()
-      ..color = color.withValues(alpha: 0.25)
-      ..strokeWidth = 1.0
-      ..style = PaintingStyle.stroke;
-
-    for (int i = 0; i < points.length; i++) {
-      final point1 = points[i];
-      final point2 = points[(i + 1) % points.length];
-
-      // Only draw connections for points that are reasonably close and visible
-      final distance = math.sqrt(
-        math.pow(point1.x - point2.x, 2) +
-        math.pow(point1.y - point2.y, 2) +
-        math.pow(point1.z - point2.z, 2)
-      );
-
-      if (distance < 0.8 && point1.z > -1 && point2.z > -1) {
-        final offset1 = Offset(
-          center.dx + point1.x * scale,
-          center.dy + point1.y * scale,
-        );
-        final offset2 = Offset(
-          center.dx + point2.x * scale,
-          center.dy + point2.y * scale,
-        );
-
-        canvas.drawLine(offset1, offset2, paint);
+      // Simple perspective projection
+      final perspective = 300.0;
+      final scale = perspective / (perspective + rotatedZ);
+      final screenX = rotatedX * scale + center.dx;
+      final screenY = node.y * scale + center.dy;
+      
+      projectedNodes.add(Offset(screenX, screenY));
+    }
+    
+    // Draw connections with animated pulses
+    final connectionPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    
+    for (final connection in connections) {
+      final start = projectedNodes[connection.node1];
+      final end = projectedNodes[connection.node2];
+      
+      // Animated connection strength
+      final animatedStrength = connection.strength * 
+        (0.3 + 0.7 * math.sin(rotation * connection.pulseSpeed + connection.node1));
+      
+      connectionPaint.color = modeColor.withOpacity(animatedStrength * 0.6); // Increased from 0.4
+      
+      // Draw connection line
+      canvas.drawLine(start, end, connectionPaint);
+      
+      // Draw pulse along connection
+      if (animatedStrength > 0.7) {
+        final pulsePosition = (rotation * connection.pulseSpeed) % 1.0;
+        final pulsePoint = Offset.lerp(start, end, pulsePosition)!;
+        
+        final pulsePaint = Paint()
+          ..color = modeColor.withOpacity(0.8)
+          ..style = PaintingStyle.fill;
+        
+        canvas.drawCircle(pulsePoint, 2.0, pulsePaint);
       }
     }
-  }
-
-  void _drawPoints(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color, double size) {
-    final paint = Paint()
-      ..color = color.withValues(alpha: 0.95)
-      ..style = PaintingStyle.fill;
-
-    for (final point in points) {
-      // Only draw points that are in front
-      if (point.z > -1.5) {
-        final opacity = (point.z + 1.5) / 3.0;
-        paint.color = color.withValues(alpha: 0.95 * opacity);
-
-        final offset = Offset(
-          center.dx + point.x * scale,
-          center.dy + point.y * scale,
-        );
-
-        canvas.drawCircle(offset, size, paint);
+    
+    // Draw nodes with dynamic sizing
+    final nodePaint = Paint()..style = PaintingStyle.fill;
+    
+    for (int i = 0; i < nodes.length; i++) {
+      final node = nodes[i];
+      final screenPos = projectedNodes[i];
+      
+      // Check if node is in front
+      final rotatedZ = node.x * math.sin(rotation) + node.z * math.cos(rotation);
+      if (rotatedZ > -150) {
+        final nodeIntensity = node.intensity * 
+          (0.5 + 0.5 * math.sin(rotation * 2 + node.pulsePhase + pulse * math.pi * 2));
+        
+        nodePaint.color = modeColor.withOpacity(nodeIntensity * 0.95);
+        
+        final nodeSize = 1.0 + (nodeIntensity * 1.0); // Reduced from 1.5 + (nodeIntensity * 3)
+        canvas.drawCircle(screenPos, nodeSize, nodePaint);
+        
+        // Draw node glow for highly active nodes
+        if (nodeIntensity > 0.8) {
+          final glowPaint = Paint()
+            ..color = modeColor.withOpacity(0.3)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+          canvas.drawCircle(screenPos, nodeSize * 2, glowPaint);
+        }
       }
     }
-  }
-
-  void _drawInnerSphere(Canvas canvas, Offset center, double scale, List<NeuralPoint> points, Color color) {
-    final paint = Paint()
-      ..color = color.withValues(alpha: 0.1)
-      ..strokeWidth = 1.0
-      ..style = PaintingStyle.stroke;
-
-    // Draw wireframe connections
-    for (int i = 0; i < points.length; i += 4) {
-      for (int j = i + 1; j < math.min(i + 4, points.length); j++) {
-        final point1 = points[i];
-        final point2 = points[j];
-
-        final offset1 = Offset(
-          center.dx + point1.x * scale,
-          center.dy + point1.y * scale,
+    
+    // Draw floating particles
+    final particlePaint = Paint()..style = PaintingStyle.fill;
+    
+    for (final particle in particles) {
+      final animatedLife = (particle.life + particleTime) % 1.0;
+      final opacity = math.sin(animatedLife * math.pi);
+      
+      if (opacity > 0) {
+        particlePaint.color = modeColor.withOpacity(opacity * 0.6);
+        
+        final particleX = particle.x + particle.velocity.dx * particleTime * 100;
+        final particleY = particle.y + particle.velocity.dy * particleTime * 100;
+        
+        canvas.drawCircle(
+          Offset(particleX + center.dx, particleY + center.dy),
+          1.0 + opacity,
+          particlePaint,
         );
-        final offset2 = Offset(
-          center.dx + point2.x * scale,
-          center.dy + point2.y * scale,
-        );
-
-        canvas.drawLine(offset1, offset2, paint);
       }
-    }
-  }
-
-  double _getTwistForMode() {
-    switch (mode) {
-      case 'COLLAPSE':
-        return 0.7;
-      case 'DANGER':
-        return 0.5;
-      case 'HYPERFOCUS':
-        return 0.35;
-      case 'TRANSCENDENT':
-        return 0.25;
-      default:
-        return 0.2;
-    }
-  }
-
-  Color _getCoreColorForMode() {
-    switch (mode) {
-      case 'COLLAPSE':
-        return AppColors.red500;
-      case 'DANGER':
-        return AppColors.rose400;
-      case 'HYPERFOCUS':
-        return AppColors.cyan400;
-      case 'TRANSCENDENT':
-        return AppColors.purple400;
-      default:
-        return AppColors.emerald400;
     }
   }
 
   @override
   bool shouldRepaint(NeuralSpherePainter oldDelegate) {
-    return rotationAnimation != oldDelegate.rotationAnimation ||
-           pulseAnimation != oldDelegate.pulseAnimation ||
-           innerRotationAnimation != oldDelegate.innerRotationAnimation ||
-           mode != oldDelegate.mode;
+    return rotation != oldDelegate.rotation ||
+           pulse != oldDelegate.pulse ||
+           particleTime != oldDelegate.particleTime ||
+           modeColor != oldDelegate.modeColor;
+  }
+}
+
+class ScanningLinesPainter extends CustomPainter {
+  final double animation;
+  final Color color;
+
+  ScanningLinesPainter({required this.animation, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color.withOpacity(0.3)
+      ..strokeWidth = 1.0
+      ..style = PaintingStyle.stroke;
+
+    // Horizontal scanning lines
+    for (int i = 0; i < 8; i++) {
+      final y = (animation * size.height + i * size.height / 8) % size.height;
+      final opacity = math.sin((animation + i * 0.125) * math.pi * 2) * 0.5 + 0.5;
+      
+      paint.color = color.withOpacity(opacity * 0.2);
+      canvas.drawLine(
+        Offset(0, y),
+        Offset(size.width, y),
+        paint,
+      );
+    }
+
+    // Vertical scanning lines
+    for (int i = 0; i < 6; i++) {
+      final x = (animation * size.width + i * size.width / 6) % size.width;
+      final opacity = math.sin((animation + i * 0.167) * math.pi * 2) * 0.5 + 0.5;
+      
+      paint.color = color.withOpacity(opacity * 0.15);
+      canvas.drawLine(
+        Offset(x, 0),
+        Offset(x, size.height),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(ScanningLinesPainter oldDelegate) {
+    return animation != oldDelegate.animation || color != oldDelegate.color;
   }
 }

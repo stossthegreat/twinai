@@ -62,7 +62,7 @@ class _GlitchOverlayState extends State<GlitchOverlay>
                 // Red channel
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.2 * _animation.value),
+                    color: Colors.red.withOpacity( 0.2 * _animation.value),
                   ),
                 ),
                 
@@ -71,7 +71,7 @@ class _GlitchOverlayState extends State<GlitchOverlay>
                   offset: Offset(2.0 * _animation.value, 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.cyan.withValues(alpha: 0.2 * _animation.value),
+                      color: Colors.cyan.withOpacity( 0.2 * _animation.value),
                     ),
                   ),
                 ),
@@ -81,7 +81,7 @@ class _GlitchOverlayState extends State<GlitchOverlay>
                   offset: Offset(-2.0 * _animation.value, 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.2 * _animation.value),
+                      color: Colors.green.withOpacity( 0.2 * _animation.value),
                     ),
                   ),
                 ),

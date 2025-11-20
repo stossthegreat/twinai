@@ -83,8 +83,8 @@ class _ScannerOverlayState extends State<ScannerOverlay>
             builder: (context, child) {
               return Container(
                 decoration: BoxDecoration(
-                  color: AppColors.emerald500.withValues(
-                    alpha: 0.05 * (0.5 + 0.5 * _pulseController.value)
+                  color: AppColors.emerald500.withOpacity(
+                    0.05 * (0.5 + 0.5 * _pulseController.value)
                   ),
                 ),
               );
@@ -105,8 +105,8 @@ class _ScannerOverlayState extends State<ScannerOverlay>
                     gradient: LinearGradient(
                       colors: [
                         Colors.transparent,
-                        AppColors.emerald400.withValues(
-                          alpha: 0.8 * (0.3 + 0.7 * _pulseController.value)
+                        AppColors.emerald400.withOpacity(
+                          0.8 * (0.3 + 0.7 * _pulseController.value)
                         ),
                         Colors.transparent,
                       ],
@@ -137,15 +137,15 @@ class _ScannerOverlayState extends State<ScannerOverlay>
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          AppColors.emerald400.withValues(alpha: 0.8),
-                          AppColors.cyan400.withValues(alpha: 0.6),
-                          AppColors.emerald400.withValues(alpha: 0.8),
+                          AppColors.emerald400.withOpacity( 0.8),
+                          AppColors.cyan400.withOpacity( 0.6),
+                          AppColors.emerald400.withOpacity( 0.8),
                           Colors.transparent,
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.emerald400.withValues(alpha: 0.3),
+                          color: AppColors.emerald400.withOpacity( 0.3),
                           blurRadius: 10,
                           spreadRadius: 1,
                         ),
@@ -172,7 +172,7 @@ class _ScannerOverlayState extends State<ScannerOverlay>
                   decoration: BoxDecoration(
                     color: AppColors.black80,
                     border: Border.all(
-                      color: AppColors.emerald400.withValues(alpha: 0.5),
+                      color: AppColors.emerald400.withOpacity( 0.5),
                     ),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
@@ -187,8 +187,8 @@ class _ScannerOverlayState extends State<ScannerOverlay>
                           color: AppColors.emerald400,
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.emerald400.withValues(
-                                alpha: 0.6 * (0.3 + 0.7 * _pulseController.value)
+                              color: AppColors.emerald400.withOpacity(
+                                0.6 * (0.3 + 0.7 * _pulseController.value)
                               ),
                               blurRadius: 8,
                               spreadRadius: 2,
@@ -279,7 +279,7 @@ class ScanGridPainter extends CustomPainter {
         final distance = (x + y) / (size.width + size.height);
         final opacity = 0.1 + 0.05 * (1 + math.sin(phase + distance * 10)) / 2;
         
-        paint.color = AppColors.emerald400.withValues(alpha: opacity);
+        paint.color = AppColors.emerald400.withOpacity( opacity);
         
         if (x < size.width) {
           canvas.drawLine(

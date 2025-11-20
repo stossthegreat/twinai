@@ -127,13 +127,13 @@ class _DreamModeState extends State<DreamMode>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.purple500.withValues(alpha: 0.15),
-                  AppColors.indigo500.withValues(alpha: 0.15),
-                  AppColors.pink500.withValues(alpha: 0.15),
+                  AppColors.purple500.withOpacity( 0.15),
+                  AppColors.indigo500.withOpacity( 0.15),
+                  AppColors.pink500.withOpacity( 0.15),
                 ],
               ),
               border: Border.all(
-                color: AppColors.purple400.withValues(alpha: 0.4),
+                color: AppColors.purple400.withOpacity( 0.4),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -182,13 +182,13 @@ class _DreamModeState extends State<DreamMode>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.indigo500.withValues(alpha: 0.2),
-                  AppColors.purple500.withValues(alpha: 0.2),
-                  AppColors.pink500.withValues(alpha: 0.2),
+                  AppColors.indigo500.withOpacity( 0.2),
+                  AppColors.purple500.withOpacity( 0.2),
+                  AppColors.pink500.withOpacity( 0.2),
                 ],
               ),
               border: Border.all(
-                color: AppColors.indigo500.withValues(alpha: 0.5),
+                color: AppColors.indigo500.withOpacity( 0.5),
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -248,7 +248,7 @@ class DreamFrequencyMap extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.black70,
         border: Border.all(
-          color: AppColors.purple400.withValues(alpha: 0.3),
+          color: AppColors.purple400.withOpacity( 0.3),
           width: 2,
         ),
         borderRadius: BorderRadius.circular(16),
@@ -278,8 +278,8 @@ class DreamFrequencyMap extends StatelessWidget {
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              AppColors.purple500.withValues(alpha: 0.4 * opacity),
-                              AppColors.pink500.withValues(alpha: 0.4 * opacity),
+                              AppColors.purple500.withOpacity( 0.4 * opacity),
+                              AppColors.pink500.withOpacity( 0.4 * opacity),
                             ],
                           ),
                         ),
@@ -300,7 +300,7 @@ class DreamFrequencyMap extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.purple200.withValues(alpha: 0.9),
+                      color: AppColors.purple200.withOpacity( 0.9),
                       letterSpacing: 3.0,
                     ),
                   ),
@@ -368,7 +368,7 @@ class DreamCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: _getTypeGradient(),
         border: Border.all(
-          color: typeColor.withValues(alpha: 0.7),
+          color: typeColor.withOpacity( 0.7),
           width: 2,
         ),
         borderRadius: BorderRadius.circular(16),
@@ -526,9 +526,9 @@ class DreamCard extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 6),
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.purple500.withValues(alpha: 0.1),
+                        color: AppColors.purple500.withOpacity( 0.1),
                         border: Border.all(
-                          color: AppColors.purple400.withValues(alpha: 0.3),
+                          color: AppColors.purple400.withOpacity( 0.3),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(6),
@@ -537,7 +537,7 @@ class DreamCard extends StatelessWidget {
                         symbol,
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.purple200.withValues(alpha: 0.9),
+                          color: AppColors.purple200.withOpacity( 0.9),
                         ),
                       ),
                     )),
@@ -562,9 +562,9 @@ class DreamCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.pink500.withValues(alpha: 0.1),
+                        color: AppColors.pink500.withOpacity( 0.1),
                         border: Border.all(
-                          color: AppColors.pink400.withValues(alpha: 0.3),
+                          color: AppColors.pink400.withOpacity( 0.3),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(6),
@@ -573,7 +573,7 @@ class DreamCard extends StatelessWidget {
                         dream.emotionalSignature,
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.pink200.withValues(alpha: 0.9),
+                          color: AppColors.pink200.withOpacity( 0.9),
                         ),
                       ),
                     ),
@@ -659,8 +659,8 @@ class DreamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.amber500.withValues(alpha: 0.25),
-            AppColors.orange500.withValues(alpha: 0.15),
+            AppColors.amber500.withOpacity( 0.25),
+            AppColors.orange500.withOpacity( 0.15),
           ],
         );
       case "PROPHETIC":
@@ -668,8 +668,8 @@ class DreamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.purple500.withValues(alpha: 0.25),
-            AppColors.pink500.withValues(alpha: 0.15),
+            AppColors.purple500.withOpacity( 0.25),
+            AppColors.pink500.withOpacity( 0.15),
           ],
         );
       case "SHADOW":
@@ -677,8 +677,8 @@ class DreamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.slate500.withValues(alpha: 0.25),
-            AppColors.slate400.withValues(alpha: 0.15),
+            AppColors.slate500.withOpacity( 0.25),
+            AppColors.slate400.withOpacity( 0.15),
           ],
         );
       case "LUCID":
@@ -686,8 +686,8 @@ class DreamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.cyan500.withValues(alpha: 0.25),
-            AppColors.blue500.withValues(alpha: 0.15),
+            AppColors.cyan500.withOpacity( 0.25),
+            AppColors.blue500.withOpacity( 0.15),
           ],
         );
       default:
@@ -695,8 +695,8 @@ class DreamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.emerald500.withValues(alpha: 0.25),
-            AppColors.green500.withValues(alpha: 0.15),
+            AppColors.emerald500.withOpacity( 0.25),
+            AppColors.green500.withOpacity( 0.15),
           ],
         );
     }
